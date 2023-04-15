@@ -40,6 +40,15 @@ function draw() {
     fill(215);
     textSize(16);
     text('Click to apply force', 8, 24);
+    text('Up and down keys add and remove balls respectively', 8, 48);
+
+    if (keyIsPressed) {
+        if (keyCode === UP_ARROW) {
+            balls.push(createBall());
+        } else if (keyCode === DOWN_ARROW) {
+            balls.pop();
+        }
+    }
 
     updatePosition();
 
