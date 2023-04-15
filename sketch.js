@@ -1,15 +1,22 @@
-const WIDTH = 640;
-const HEIGHT = 640;
+const SKETCH_MARGIN = 24;
 
 const FORCE_GRAVITY = 0.098;
 
 const COEFFICIENT_RESTITUTION = 0.9;
 
+function getCanvasWidth() {
+    return windowWidth - SKETCH_MARGIN * 2;
+}
+
+function getCanvasHeight() {
+    return windowHeight - SKETCH_MARGIN * 2;
+}
+
 function createBall() {
     return {
         size: Math.random() * 8 + 8,
-        x: Math.random() * WIDTH,
-        y: Math.random() * HEIGHT,
+        x: Math.random() * getCanvasWidth(),
+        y: Math.random() * getCanvasHeight(),
         vx: Math.random() * 2 - 1,
         vy: Math.random() * 2 - 1,
         ax: 0,
@@ -20,12 +27,12 @@ function createBall() {
 let n = 10;
 let balls = [];
 
-for (let i = 0; i < n; i++) {
-    balls.push(createBall());
-}
-
 function setup() {
-    createCanvas(WIDTH, HEIGHT);
+    for (let i = 0; i < n; i++) {
+        balls.push(createBall());
+    }
+
+    createCanvas(getCanvasWidth(), getCanvasHeight());
 }
 
 function draw() {
@@ -41,10 +48,14 @@ function draw() {
     });
 }
 
+function windowResized() {
+    resizeCanvas(getCanvasWidth(), getCanvasHeight());
+}
+
 function mousePressed() {
     balls.forEach(ball => {
-        let fx = (mouseX - ball.x) / WIDTH * 32 / ball.size;
-        let fy = (mouseY - ball.y) / HEIGHT * 32 / ball.size;
+        let fx = (mouseX - ball.x) / getCanvasWidth() * 32 / ball.size;
+        let fy = (mouseY - ball.y) / getCanvasHeight() * 32 / ball.size;
 
         ball.ax += fx;
         ball.ay += fy;
@@ -60,8 +71,8 @@ function updatePosition() {
         ball.x += ball.vx;
         ball.y += ball.vy;
 
-        if (ball.x > WIDTH - half_size) {
-            ball.x = WIDTH - half_size;
+        if (ball.x > getCanvasWidth() - half_size) {
+            ball.x = getCanvasWidth() - half_size;
             ball.vx = -ball.vx * COEFFICIENT_RESTITUTION;
         }
 
@@ -70,8 +81,8 @@ function updatePosition() {
             ball.vx = -ball.vx * COEFFICIENT_RESTITUTION;
         }
 
-        if (ball.y > HEIGHT - half_size) {
-            ball.y = HEIGHT - half_size;
+        if (ball.y > getCanvasHeight() - half_size) {
+            ball.y = getCanvasHeight() - half_size;
             ball.vy = -ball.vy * COEFFICIENT_RESTITUTION;
         }
 
