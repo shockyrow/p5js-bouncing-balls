@@ -17,7 +17,7 @@ function createBall() {
     };
 }
 
-let n = 100;
+let n = 10;
 let balls = [];
 
 for (let i = 0; i < n; i++) {
